@@ -105,6 +105,21 @@ const Employee=()=>{
         init();
     });
   }
+  ////// To Show Budget
+ function showbudgetDepartment() {
+   
+      
+  db.query(`select name,sum(salary) from role,department where role.department_id=department.id group by(name);`, (err, rows) => {
+        if (err) {
+            //res.status(500).json({ error: err.message });
+            return "error";
+        }
+        console.table(rows);
+        init();
+    });
+
+ }
+  ///////
 /////To Update Employee Role 
  async function updateEmployee() {
   try {
@@ -156,14 +171,14 @@ const addEmployee = async (req, res) =>   {
                 empTitle.push(empArray[i].title);
             }
       const manArray = await Manager();
-      console.log(manArray);
+    //  console.log(manArray);
       const manager = [];
       for (let i=0; i<manArray.length; i++) {
         //if (manager.includes(manArray[i].ManagerName) === false)
           manager.push(manArray[i].EmployeeName)
           
       }
-      console.log(manager)
+      //console.log(manager)
  
 
   
@@ -266,7 +281,7 @@ const addRole = async (req, res) =>   {
       name: 'choices',
       type: "list",
       message: 'Choose any option',
-      choices: ["List Departments","List Roles","List Employees","Add Department","Add Role","Add Employee","Update Employee","View Employees By Manager","View Employees By Department"],
+      choices: ["List Departments","List Roles","List Employees","Add Department","Add Role","Add Employee","Update Employee","View Employees By Manager","View Employees By Department","Show Budget Department wise"],
 }
 ]) 
 }
@@ -333,6 +348,9 @@ const addRole = async (req, res) =>   {
     }
     else if (data.choices === "View Employees By Department"){
       showempDepartment();
+    }
+     else if (data.choices === "Show Budget Department wise"){
+      showbudgetDepartment();
     }
 
 }
